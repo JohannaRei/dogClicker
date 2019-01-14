@@ -1,0 +1,5 @@
+export const BUY_ITEMS = 'BUY_ITEMS';
+export const BUY_ITEMS_SUCCESS = 'BUY_ITEMS_SUCCESS';
+export const UPDATE_FBP = 'UPDATE_FBP';
+export const UPDATE_AMOUNT = 'UPDATE_AMOUNT';
+export const START_AUTOFEED = 'START_AUTOFEED';
