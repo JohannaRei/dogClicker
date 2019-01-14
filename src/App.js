@@ -5,10 +5,17 @@ import { bindActionCreators } from 'redux';
 import * as itemActions from './actions/itemActions';
 
 class App extends Component {
+  state = {
+    fbp: 0,
+    fps: 0
+  };
+
   componentDidMount() {
     if (this.props.autofeed) {
       this.startAutofeed();
+      this.getFPS();
     }
+    this.setState({ fpb: this.props.fbp });
   }
 
   startAutofeed = () => {
@@ -19,18 +26,15 @@ class App extends Component {
     this.props.itemActions.updateFbp(this.props.feedAmount);
   };
 
-  buyAll = item => {
+  buyAll = async item => {
     let price = item.price;
     let available = this.props.fbp;
     let idx = 0;
     while (available >= price && idx < 10) {
-      this.props.itemActions.buyItems(item);
+      await this.props.itemActions.buyItems(item);
       available = available - price;
       price = price * item.benefit;
-      console.log(available);
-      console.log(price);
     }
-    console.log(item);
   };
 
   buyItems = (item, amount) => {
@@ -44,16 +48,26 @@ class App extends Component {
     if (!this.props.autofeed) {
       startAutofeed();
       this.startAutofeed();
+      this.getFPS();
     }
+  };
+
+  getFPS = () => {
+    setInterval(() => {
+      const fps = (this.props.fbp - this.state.fbp) / 3;
+      this.setState({ fbp: this.props.fbp, fps });
+    }, 3000);
   };
 
   render() {
     const { fbp, feedAmount } = this.props;
+    const fps = this.state.fps > feedAmount ? this.state.fps : feedAmount;
     return (
       <div>
         <p>{fbp.toFixed(0)}</p>
         <button onClick={this.feed}>Feed</button>
-        <p>{feedAmount.toFixed(2)} per second/click</p>
+        <p>{feedAmount.toFixed(2)} per feeding</p>
+        <p>{fps.toFixed(2)} FPS</p>
         <Shop onClick={this.buyItems} />
       </div>
     );

@@ -25,7 +25,7 @@ export default function item(state = initialState, action) {
           }
         },
         fbp: state.fbp - current.price,
-        feedAmount: state.feedAmount + extra
+        feedAmount: state.feedAmount * current.benefit + extra
       };
     case UPDATE_FBP:
       return { ...state, fbp: state.fbp + action.fbp };
