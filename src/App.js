@@ -6,6 +6,7 @@ import * as itemActions from './actions/itemActions';
 import SpecialItem from './components/SpecialItem';
 import format from './utils/format';
 import FbpContainer from './components/FbpContainer';
+import Column from './components/common/Column';
 
 class App extends Component {
   state = {
@@ -32,7 +33,8 @@ class App extends Component {
 
   startSpecial = () => {
     setInterval(() => {
-      const lucky = Math.random() > 0.9;
+      const lucky = Math.random() > 0.2;
+      console.log(lucky);
       if (lucky) {
         this.showSpecial();
       }
@@ -94,17 +96,16 @@ class App extends Component {
     const fps = this.state.fps > feedAmount ? this.state.fps : feedAmount;
     return (
       <div style={styles.container}>
-        <div style={styles.column}>
+        <Column>
           <FbpContainer feed={this.feed} fps={fps} {...this.props} />
           <Shop onClick={this.buyItems} format={this.formatNumber} />
-        </div>
-        <div>
-          {this.state.showSpecial && (
-            <SpecialItem
-              onClick={() => this.feed(this.props.feedAmount * 10)}
-            />
-          )}
-        </div>
+        </Column>
+        <Column>
+          <SpecialItem
+            onClick={() => this.feed(this.props.feedAmount * 10)}
+            show={this.state.showSpecial}
+          />
+        </Column>
       </div>
     );
   }
@@ -113,11 +114,9 @@ class App extends Component {
 const styles = {
   container: {
     display: 'flex',
-    flexDirection: 'row'
-  },
-  column: {
-    display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 };
 
