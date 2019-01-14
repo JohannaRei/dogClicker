@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as itemActions from './actions/itemActions';
 import SpecialItem from './components/SpecialItem';
 import format from './utils/format';
+import FbpContainer from './components/FbpContainer';
 
 class App extends Component {
   state = {
@@ -89,15 +90,12 @@ class App extends Component {
   };
 
   render() {
-    const { fbp, feedAmount } = this.props;
+    const { feedAmount } = this.props;
     const fps = this.state.fps > feedAmount ? this.state.fps : feedAmount;
     return (
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <p>{this.formatNumber(fbp)}</p>
-          <button onClick={this.feed}>Feed</button>
-          <p>{this.formatNumber(feedAmount)} per feeding</p>
-          <p>{this.formatNumber(fps)} FPS</p>
+      <div style={styles.container}>
+        <div style={styles.column}>
+          <FbpContainer feed={this.feed} fps={fps} {...this.props} />
           <Shop onClick={this.buyItems} format={this.formatNumber} />
         </div>
         <div>
@@ -111,6 +109,17 @@ class App extends Component {
     );
   }
 }
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  column: {
+    display: 'flex',
+    flexDirection: 'column'
+  }
+};
 
 const mapStateToProps = state => {
   const { items, fbp, feedAmount, autofeed } = state.items;
