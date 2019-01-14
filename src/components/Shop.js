@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ItemButton from './ItemButton';
 
-const Shop = ({ fbp, onClick, items }) => (
+const Shop = ({ fbp, onClick, items, format }) => (
   <div>
     <h3>Shop</h3>
     {Object.values(items).map(item => {

@@ -4,6 +4,7 @@ import Shop from './components/Shop';
 import { bindActionCreators } from 'redux';
 import * as itemActions from './actions/itemActions';
 import SpecialItem from './components/SpecialItem';
+import format from './utils/format';
 
 class App extends Component {
   state = {
@@ -16,7 +17,7 @@ class App extends Component {
     if (this.props.autofeed) {
       this.startAutofeed();
     }
-    this.getFPS();
+    this.startFPS();
     this.startSpecial();
     this.setState({ fpb: this.props.fbp });
   }
@@ -31,7 +32,6 @@ class App extends Component {
   startSpecial = () => {
     setInterval(() => {
       const lucky = Math.random() > 0.9;
-      console.log(lucky);
       if (lucky) {
         this.showSpecial();
       }
@@ -74,11 +74,10 @@ class App extends Component {
     if (!this.props.autofeed) {
       startAutofeed();
       this.startAutofeed();
-      this.getFPS();
     }
   };
 
-  getFPS = () => {
+  startFPS = () => {
     setInterval(() => {
       const fps = (this.props.fbp - this.state.fbp) / 3;
       this.setState({ fbp: this.props.fbp, fps });
@@ -86,35 +85,7 @@ class App extends Component {
   };
 
   formatNumber = number => {
-    const value = String(number);
-    let divider = 2;
-    let symbol = 'k';
-    let numberString;
-    switch (true) {
-      case number >= 10000000:
-        symbol = 'm';
-        divider = 2;
-        break;
-      case number >= 1000000:
-        symbol = 'm';
-        divider = 1;
-        break;
-      case number > 100000:
-        divider = 3;
-        break;
-      case number > 10000:
-        break;
-      case number > 1000:
-        divider = 1;
-        break;
-      default:
-        return number % 1 === 0 ? number : number.toFixed(2);
-    }
-    numberString = `${value.substring(0, divider)}.${value.substring(
-      divider,
-      divider + 2
-    )}${symbol}`;
-    return numberString;
+    return format(number, 2);
   };
 
   render() {
@@ -127,7 +98,7 @@ class App extends Component {
           <button onClick={this.feed}>Feed</button>
           <p>{this.formatNumber(feedAmount)} per feeding</p>
           <p>{this.formatNumber(fps)} FPS</p>
-          <Shop onClick={this.buyItems} />
+          <Shop onClick={this.buyItems} format={this.formatNumber} />
         </div>
         <div>
           {this.state.showSpecial && (
