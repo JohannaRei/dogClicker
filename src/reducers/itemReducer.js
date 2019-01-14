@@ -21,7 +21,7 @@ export default function item(state = initialState, action) {
           [action.item.name]: {
             ...current,
             count: current.count + 1,
-            price: current.price * current.benefit
+            price: current.price * 1.3
           }
         },
         fbp: state.fbp - current.price,

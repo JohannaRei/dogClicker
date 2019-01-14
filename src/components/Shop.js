@@ -7,11 +7,13 @@ const Shop = ({ fbp, onClick, items }) => (
   <div>
     <h3>Shop</h3>
     {Object.values(items).map(item => {
+      const show = item.show ? items[item.show].count > 0 : true;
       const showMultiple = fbp >= item.price + item.price * item.benefit;
       return (
         <ItemButton
           key={item.name}
           disabled={fbp <= item.price - 1}
+          visible={show}
           item={item}
           onClick={onClick}
           showMultiple={showMultiple}
