@@ -5,14 +5,14 @@ export default {
       name: 'kibble',
       price: 100,
       benefit: 1.01,
-      start: 2,
+      start: 5,
       count: 0
     },
     treat: {
       name: 'treat',
       price: 1000,
       benefit: 1.05,
-      start: 5,
+      start: 10,
       count: 0,
       show: 'kibble'
     },
@@ -20,7 +20,7 @@ export default {
       name: 'bone',
       price: 10000,
       benefit: 1.1,
-      start: 10,
+      start: 50,
       count: 0,
       show: 'treat'
     },
@@ -28,7 +28,7 @@ export default {
       name: 'ham',
       price: 100000,
       benefit: 1.15,
-      start: 20,
+      start: 100,
       count: 0,
       show: 'bone'
     },
@@ -36,7 +36,7 @@ export default {
       name: 'steak',
       price: 1000000,
       benefit: 1.2,
-      start: 100,
+      start: 500,
       count: 0,
       show: 'ham'
     }

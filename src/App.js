@@ -4,7 +4,6 @@ import Shop from './components/Shop';
 import { bindActionCreators } from 'redux';
 import * as itemActions from './actions/itemActions';
 import SpecialItem from './components/SpecialItem';
-import format from './utils/format';
 import FbpContainer from './components/FbpContainer';
 import Column from './components/common/Column';
 
@@ -34,7 +33,6 @@ class App extends Component {
   startSpecial = () => {
     setInterval(() => {
       const lucky = Math.random() > 0.2;
-      console.log(lucky);
       if (lucky) {
         this.showSpecial();
       }
@@ -52,12 +50,15 @@ class App extends Component {
   };
 
   buyMultiple = async (item, amount) => {
+    console.log(amount);
     let price = item.price;
     let available = this.props.fbp;
     let idx = 0;
-    let count = amount ? idx < amount : true;
-    while (available >= price && count) {
-      await this.props.itemActions.buyItems(item);
+    while (available >= price) {
+      let count = amount ? idx < amount : true;
+      if (count) {
+        await this.props.itemActions.buyItems(item);
+      }
       available = available - price;
       price = price * 1.3;
       idx++;
@@ -66,7 +67,7 @@ class App extends Component {
 
   buyItems = (item, amount) => {
     const { buyItems, startAutofeed } = this.props.itemActions;
-    if (amount === 'all') {
+    if (amount === 'max') {
       this.buyMultiple(item);
     } else if (amount) {
       this.buyMultiple(item, amount);
@@ -87,10 +88,6 @@ class App extends Component {
     }, 3000);
   };
 
-  formatNumber = number => {
-    return format(number, 2);
-  };
-
   render() {
     const { feedAmount } = this.props;
     const fps = this.state.fps > feedAmount ? this.state.fps : feedAmount;
@@ -98,11 +95,11 @@ class App extends Component {
       <div style={styles.container}>
         <Column>
           <FbpContainer feed={this.feed} fps={fps} {...this.props} />
-          <Shop onClick={this.buyItems} format={this.formatNumber} />
+          <Shop onClick={this.buyItems} />
         </Column>
         <Column>
           <SpecialItem
-            onClick={() => this.feed(this.props.feedAmount * 10)}
+            onClick={() => this.feed(this.props.feedAmount * 100)}
             show={this.state.showSpecial}
           />
         </Column>

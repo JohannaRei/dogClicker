@@ -1,24 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ItemButton from './ItemButton';
+import ButtonRow from './ButtonRow';
 import FadeIn from './common/FadeIn';
+import { priceOfMultiple } from '../utils/numberUtils';
 
-const Shop = ({ fbp, onClick, items, format }) => (
+const Shop = ({ fbp, onClick, items }) => (
   <div style={styles.container}>
     <h3>Shop</h3>
     <FadeIn>
       {Object.values(items).map(item => {
         const show = item.show ? items[item.show].count > 0 : true;
-        const showMultiple = fbp >= item.price + item.price * item.benefit;
+        const enableMax = fbp >= item.price + item.price * 1.3;
+        const enable10 = fbp >= priceOfMultiple(item.price, 10);
+        const enable25 = fbp >= priceOfMultiple(item.price, 25);
         return (
           show && (
-            <ItemButton
+            <ButtonRow
               key={item.name}
               disabled={fbp <= item.price - 1}
               item={item}
               onClick={onClick}
-              showMultiple={showMultiple}
+              enableMax={enableMax}
+              enable10={enable10}
             />
           )
         );
@@ -31,7 +35,8 @@ const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 500
   }
 };
 

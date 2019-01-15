@@ -1,5 +1,5 @@
 import React from 'react';
-import format from '../utils/format';
+import { format } from '../utils/numberUtils';
 
 const FbpContainer = ({ fbp, feed, feedAmount, fps }) => {
   return (
